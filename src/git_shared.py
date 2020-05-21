@@ -1,16 +1,15 @@
 """A shared library of utility functions and classes.
 
-A shared library of functions and classes that are used to build other, more complex 
+A shared library of functions and classes that are used to build other, more complex
 commands. Commonly used functionality should be implemented here.
 """
 
 import subprocess
 import shlex
-import git_shared
 
 def run_command(command):
     """Runs the given command in a subprocess.
-    
+
     command: String of the command and its arguments to run.
 
     Return: (return code, list<string> of command output)
@@ -18,26 +17,26 @@ def run_command(command):
     final_output = []
     process = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE)
     while True:
-        output = process.stdout.readline()
+        output = process.stdout.readline() if process.stdout is not None else ''
         if output == '' and process.poll() is not None:
             break
         if output:
             final_output.append(output)
-    rc = process.poll()
-    return (rc, final_output)
+    return_code = process.poll()
+    return (return_code, final_output)
 
 def get_current_branch_info():
     """Gets information about the current branch and its remote target.
 
     Return: (return code, local branch name, remote target branch name)
     """
-    final_rc = 0
+    final_return_code = 0
     command = "git status -sb"
-    rc, output = git_shared.run_command(command)
-    if rc != 0 or len(output) == 0:
+    return_code, output = run_command(command)
+    if return_code != 0 or len(output) == 0:
         print("Error: Couldn't identify current local branch.\n")
-        final_rc = 2
-        return (final_rc, "", "")
+        final_return_code = 2
+        return (final_return_code, "", "")
     local_branch_name = ""
     remote_branch_name = ""
     for line in output:
@@ -49,5 +48,5 @@ def get_current_branch_info():
             break
     if len(local_branch_name) == 0 or len(remote_branch_name) == 0:
         print("Error: Couldn't identify current local or remote branch.\n")
-        final_rc = 3
-    return (final_rc, local_branch_name, remote_branch_name)
+        final_return_code = 3
+    return (final_return_code, local_branch_name, remote_branch_name)

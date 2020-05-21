@@ -131,3 +131,10 @@ dmypy.json
 # VS Code
 .vscode/
 .history/
+
+# Project-specific
+activate.bat
+activatepy2.bat
+activatepy3.bat
+venvpy2/
+venvpy3/
