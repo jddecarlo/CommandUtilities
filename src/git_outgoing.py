@@ -9,6 +9,8 @@ import git_shared
 import sys
 
 rc, output = git_shared.run_command("git fetch")
+if len(output) > 0:
+    print("\n" + (r"\/" * 50) + "\n")
 if rc != 0:
     print("Error: Couldn't fetch latest from remote.\n")
     sys.exit(rc)
