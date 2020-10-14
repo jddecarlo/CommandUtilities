@@ -10,3 +10,5 @@ git config --global alias.incoming "!python $COMMAND_UTILITIES_PATH\\src\\git_in
 git config --global alias.outgoing "!python $COMMAND_UTILITIES_PATH\\src\\git_outgoing.py"
 git config --global alias.in "incoming"
 git config --global alias.out "outgoing"
+git config --global alias.contains "branch --contains"
+git config --global alias.cleanall "clean -Xfd"
